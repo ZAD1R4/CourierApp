@@ -1,14 +1,14 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routes import users, orders, locations
-from security.rate_limiter import rate_limit_middleware
+from security import rate_limiter
 from security.jwt_utils import jwt_middleware
 
 app = FastAPI()
 
 # Подключение middleware
 app.middleware("http")(jwt_middleware)
-app.middleware("http")(rate_limit_middleware)
+app.middleware("http")(rate_limiter)
 
 # Подключение маршрутов
 app.include_router(users.router, prefix="/users", tags=["Users"])

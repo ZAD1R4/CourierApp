@@ -18,6 +18,7 @@ class TokenData(BaseModel):
 class OrderCreate(BaseModel):
     client_id: str
     address: str
+    status: str = "pending"  # по умолчанию
 
 class LocationUpdate(BaseModel):
     courier_id: str

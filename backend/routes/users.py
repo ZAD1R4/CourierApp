@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from models import UserCreate, UserOut
 from database import db
 from passlib.context import CryptContext
@@ -22,3 +22,7 @@ async def login(email: str, password: str):
         raise HTTPException(status_code=400, detail="Invalid credentials")
     token = create_access_token(data={"email": user["email"], "role": user["role"]})
     return {"access_token": token, "token_type": "bearer"}
+
+@router.get("/me")
+def read_users_me(request: Request, current_user: dict = Depends(get_current_user)):
+    return current_user
