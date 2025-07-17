@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+pymongo
+motor
+pyjwt
+passlib
+python-dotenv
+redis
+python-multipart
