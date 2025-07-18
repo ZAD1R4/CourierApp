@@ -1,69 +1,35 @@
-import React from 'react';
-import { WebView } from 'react-native-webview';
-import { View, StyleSheet } from 'react-native';
+import React, { useEffect } from 'react';
 
-interface YandexMapProps {
-  courier: { latitude: number; longitude: number };
-  order: { latitude: number; longitude: number };
-}
-
-const YandexMap: React.FC<YandexMapProps> = ({ courier, order }) => {
-  const html = `
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-      <script type="text/javascript"
-        src="https://api-maps.yandex.ru/2.1/?apikey=ваш_ключ&lang=ru_RU">
-      </script>
-      <style type="text/css">
-        html, body {
-          width: 100%;
-          height: 100%;
-          margin: 0;
-          padding: 0;
-        }
-        #map {
-          width: 100%;
-          height: 100%;
-        }
-      </style>
-    </head>
-    <body>
-      <div id="map"></div>
-      <script type="text/javascript">
-        ymaps.ready(function () {
-          var map = new ymaps.Map("map", {
-            center: [${courier.latitude}, ${courier.longitude}],
-            zoom: 12
-          });
-
-          map.geoObjects.add(new ymaps.Placemark([${courier.latitude}, ${courier.longitude}], {
-            balloonContent: "Вы здесь"
-          }));
-
-          map.geoObjects.add(new ymaps.Placemark([${order.latitude}, ${order.longitude}], {
-            balloonContent: "Адрес заказа"
-          }));
+const MapComponent = () => {
+  useEffect(() => {
+    if (window.ymaps) {
+      window.ymaps.ready(() => {
+        const map = new window.ymaps.Map('map', {
+          center: [55.751574, 37.573856],
+          zoom: 10,
         });
-      </script>
-    </body>
-    </html>
-  `;
+
+        // Пример маркера курьера
+        map.geoObjects.add(new window.ymaps.Placemark(
+          [55.75, 37.57],
+          { balloonContent: "Курьер" }
+        ));
+
+        // Пример маркера заказа
+        map.geoObjects.add(new window.ymaps.Placemark(
+          [55.76, 37.58],
+          { balloonContent: "Адрес доставки" }
+        ));
+      });
+    }
+  }, []);
 
   return (
-    <WebView
-      originWhitelist={['*']}
-      source={{ html }}
-      style={styles.map}
-    />
+    <div>
+      <h2>Карта с курьерами и заказами</h2>
+      <div id="map" style={{ width: '100%', height: '500px', marginTop: '20px' }}></div>
+    </div>
   );
 };
 
-const styles = StyleSheet.create({
-  map: {
-    flex: 1,
-  },
-});
-
-export default YandexMap;
+export default MapComponent;
