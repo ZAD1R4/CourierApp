@@ -6,7 +6,7 @@ from datetime import timedelta
 import jwt
 from passlib.context import CryptContext
 
-from database import db
+from backend.database import db
 
 JWT_SECRET = "a1b2c3d4e5f678901234567890abcdef1234567890abcdef1234567890abcdef"
 JWT_ALGORITHM = "HS256"
