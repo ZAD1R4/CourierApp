@@ -2,6 +2,7 @@ import pytest
 import jwt
 from fastapi import FastAPI, Request, HTTPException
 from fastapi.testclient import TestClient
+from backend.database import db
 from unittest.mock import patch, MagicMock
 from backend.auth import (
     JWT_SECRET,
